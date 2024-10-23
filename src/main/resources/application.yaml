@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: pokemon-demo
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        default_schema: pokemon
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-root.yaml
+    default-schema: pokemon
