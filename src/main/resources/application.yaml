@@ -12,3 +12,58 @@ spring:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-root.yaml
     default-schema: pokemon
+management:
+  endpoint:
+    health:
+      enabled: true
+      show-details: always
+    info:
+      enabled: true
+    liquibase:
+      enabled: true
+    loggers:
+      enabled: true
+    metrics:
+      enabled: true
+    threaddump:
+      enabled: true
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: "health,info,liquibase,loggers,metrics,threaddump"
+  info:
+    env:
+      enabled: true
+    build:
+      enabled: true
+
+info:
+  build:
+    artifact: '@project.artifactId@'
+    name: '@project.name@'
+    version: '@project.version@'
+
+logging:
+  level:
+    com.demo: INFO
+    root: INFO
+    org.springframework.web: INFO
+    org.hibernate: INFO
+
+nps:
+  logger:
+    applicationName: POKEMON
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "(local|default)"
+  datasource:
+    url: jdbc:postgresql://postgres:5432/pokemon
+    username: user
+    password: password
+  liquibase:
+    default-schema: pokemon
