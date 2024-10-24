@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: NPS set up Java
-        uses: ./github/actions/setup-java-action
+        uses: ./.github/actions/setup-java-action
 
       - name: Download dependencies
         run: mvn -B -P github dependency:resolve-plugins dependency:resolve
@@ -23,7 +23,7 @@ jobs:
     needs: java-deps
     steps:
       - name: NPS set up Java
-        uses: ./github/actions/setup-java-action
+        uses: ./.github/actions/setup-java-action
 
       - name: Build
         run: mvn -B -Pgithub -DskipTests package
@@ -34,7 +34,7 @@ jobs:
     needs: build-java
     steps:
       - name: NPS set up Java
-        uses: ./github/actions/setup-java-action
+        uses: ./.github/actions/setup-java-action
 
       - name: Run integration tests
         run: mvn test -Dgroup=integration
