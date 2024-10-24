@@ -1,0 +1,1 @@
+TRUNCATE pokemon CASCADE;

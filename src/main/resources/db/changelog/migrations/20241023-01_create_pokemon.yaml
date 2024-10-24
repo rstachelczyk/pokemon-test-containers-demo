@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1728059077933-1
+      author: rstachelczyk
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            tableName: pokemon
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_pokemon
+                  name: id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: species
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: pokedex_number
+                  type: INT
+              - column:
+                  name: height
+                  type: DECIMAL(4,2)
+              - column:
+                  name: weight
+                  type: DECIMAL(5,2)
+  - changeSet:
+      id: 1728059077933-2
+      author: rstachelczyk
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: pokedex_number
+            constraintName: uc_pokedex_number
+            tableName: pokemon
+  - changeSet:
+      id: 1728059077933-3
+      author: rstachelczyk
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+          - createIndex:
+              columns:
+                - column:
+                    name: pokedex_number
+              indexName: idx_pokemon_num
+              tableName: pokemon

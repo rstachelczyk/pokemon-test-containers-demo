@@ -14,21 +14,15 @@
 	<name>pokemon-demo</name>
 	<description>Pokemon demo project for Spring Boot</description>
 	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
+
 	<properties>
 		<java.version>17</java.version>
+		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+		<org.projectlombok.version>1.18.34</org.projectlombok.version>
+		<postgresql.version>42.7.3</postgresql.version>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -49,7 +43,7 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.7.3</version>
+			<version>${postgresql.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 
@@ -61,7 +55,14 @@
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
-			<version>1.5.5.Final</version>
+			<version>${org.mapstruct.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>5.4.0</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -88,17 +89,61 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-maven-plugin</artifactId>
+				<version>4.27.0</version>
 				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
+					<changeLogFile>db/changelog/db.changelog-root.yaml</changeLogFile>
+					<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+					<driver>org.postgresql.Driver</driver>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.postgresql</groupId>
+						<artifactId>postgresql</artifactId>
+						<version>${postgresql.version}</version>
+						<scope>runtime</scope>
+					</dependency>
+				</dependencies>
 			</plugin>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.13.0</version>
+			<configuration>
+				<source>17</source> <!-- depending on your project -->
+				<target>17</target> <!-- depending on your project -->
+				<annotationProcessorPaths>
+					<path>
+						<groupId>org.mapstruct</groupId>
+						<artifactId>mapstruct-processor</artifactId>
+						<version>${org.mapstruct.version}</version>
+					</path>
+					<path>
+						<groupId>org.projectlombok</groupId>
+						<artifactId>lombok</artifactId>
+						<version>${org.projectlombok.version}</version>
+					</path>
+					<path>
+						<groupId>org.projectlombok</groupId>
+						<artifactId>lombok-mapstruct-binding</artifactId>
+						<version>${lombok-mapstruct-binding.version}</version>
+					</path>
+				</annotationProcessorPaths>
+			</configuration>
+		</plugin>
+		<plugin>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-maven-plugin</artifactId>
+			<configuration>
+				<excludes>
+					<exclude>
+						<groupId>org.projectlombok</groupId>
+						<artifactId>lombok</artifactId>
+					</exclude>
+				</excludes>
+			</configuration>
+		</plugin>
 		</plugins>
 	</build>
 

@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+import java.util.UUID;
+
 @Entity
 @Table(
     name = "Pokemon",
@@ -28,20 +31,22 @@ import lombok.Setter;
 public class Pokemon {
 
   @Id
-  private int id;
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "id", nullable = false)
+  private UUID id;
 
-  @Column(name = "NAME", nullable = false)
+  @Column(name = "name", nullable = false)
   private String name;
 
-  @Column(name = "SPECIES", nullable = false)
+  @Column(name = "species", nullable = false)
   private String species;
 
-  @Column(name = "POKEDEX_NUMBER", nullable = false)
+  @Column(name = "pokedex_number", nullable = false)
   private int pokedexNumber;
 
-  @Column(name = "HEIGHT")
-  private Double height;
+  @Column(name = "height", precision = 4, scale = 2)
+  private BigDecimal height;
 
-  @Column(name = "WEIGHT")
-  private Double weight;
+  @Column(name = "weight", precision = 5, scale = 2)
+  private BigDecimal weight;
 }
