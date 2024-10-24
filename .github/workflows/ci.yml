@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  pull_request:
+
+env:
+  CACHE_NAME: cache-maven-deps
+
+jobs:
+  java-deps:
+    name: Download Dependencies and Cache
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: NPS set up Java
+        uses: ./.github/actions/setup-java-action
+
+      - name: Download dependencies
+        run: mvn -B -P github dependency:resolve-plugins dependency:resolve
+
+  build-java:
+    name: Build Java
+    runs-on: ubuntu-latest
+    needs: java-deps
+    steps:
+      - uses: actions/checkout@v3
+      - name: NPS set up Java
+        uses: ./.github/actions/setup-java-action
+
+      - name: Build
+        run: mvn -B -Pgithub -DskipTests package
+
+  integration-tests:
+    name: Integration Tests with Test Containers
+    runs-on: ubuntu-latest
+    needs: build-java
+    steps:
+      - uses: actions/checkout@v3
+      - name: NPS set up Java
+        uses: ./.github/actions/setup-java-action
+
+      - name: Run integration tests
+        run: mvn test -Dgroup=integration
